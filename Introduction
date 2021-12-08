@@ -1,0 +1,6 @@
+# Polynomial-Arithmetic
+This project will receive the polynomial from file and add them together
+
+:::My project use file to input the value of polynomial
+:::Struct to store the value of each polynomial
+:::C library
