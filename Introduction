@@ -1,8 +1,9 @@
 # Polynomial-Arithmetic
 This project will receive the polynomial from file and add them together
 
-:::My project use file to input the value of polynomial
-:::Struct to store the value of each polynomial
+:::My project use file to input the value of polynomial.
+:::The program also avoid from receiving the invalid input which is not digit,alphabet and minus sign at the beginning variables.
+:::Struct to store the value of each polynomial.
 :::C library
 
 By Puttiphat Udompholpattanaporn (64011594)
