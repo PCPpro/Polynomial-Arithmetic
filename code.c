@@ -253,15 +253,25 @@ int main()
     printf("Sum of these polynomial :\n");
     int result_sum;
     int each_max;               //each array poly has how many?
-    char same_char[max+1][arr+1][6];
+    char same_char[arr+1][6];
+    int result_forsame = 0;
+    int result_forsame_each = 0;
+    int eachsame_result[arr+1];     //for same char
+    char digit_forsame[6];
+    int start=0;
     for(int i=max;i>=0;i--)
     {
-        int arr1=0;
         result_sum=0;
+        for(int k=0;k<=arr;k++)
+        {
+            for(int ii=0;ii<6;ii++)
+            {
+                same_char[k][ii]='\0';                  //set as nulk
+            }
+        }
         for(int j=0;j<=arr;j++)
         {
-            each_max=poly_arr[arr1];                
-            arr1++;
+            each_max=poly_arr[j];                
             if(each_max-i<0)
                 continue;
             else if(strcmp(pp[j].p_notdigit[each_max-i],"\0")==0)                   //0 char array first
@@ -270,10 +280,15 @@ int main()
             }
             else                                                                   //char
             {
+                
+                int index=0;
                 for(int e=0;e<6;e++)
                 {
                     if(isalpha(pp[j].p_notdigit[each_max-i][e])!=0)
-                        same_char[i][j][e] = pp[j].p_notdigit[each_max-i][e];
+                    {
+                        same_char[j][index] = pp[j].p_notdigit[each_max-i][e];
+                        index++;
+                    }
                 }
             }
         }
@@ -325,11 +340,169 @@ int main()
                 else
                     printf(" %d",result_sum);
             }
+            start=1;
         }
+        //calculate or print the polynomial///////
         for(int j=0;j<=arr;j++)
         {
-            if(strcmp(same_char[i][j],"\0")!=0)
-                printf("%s",same_char[i][j]);
+            int countt=0;
+            int first_time=0;
+            if(strcmp(same_char[j],"\0")!=0)
+            {
+                for(int k=0;k<=arr;k++)
+                {
+                    eachsame_result[k] = 0;                                             //to know which is equal
+                }
+                int delete = 0;                                                         //for delete the current char in poly
+                for(int check=0;check<=arr;check++)
+                {
+                    if(strcmp(same_char[j],same_char[check])==0 && j!=check)
+                    {
+                        if(first_time==0)
+                        {
+                            first_time=1;
+                            countt=1;
+                            eachsame_result[j] = 1;
+                        }
+                        else
+                            countt++;
+                        
+                        eachsame_result[check] = 1;
+                        strcpy(same_char[check],"\0");
+                        delete=1;
+                    }
+                }
+                if(delete==1)
+                {
+                    result_forsame = 0;
+                    for(int cal=0;cal<=arr;cal++)
+                    {
+                        result_forsame_each =0;             //for to keep each same and add afterward
+                        each_max=poly_arr[cal];  
+                        if(eachsame_result[cal] == 1)
+                        {
+                            for(int k=0;k<6;k++)
+                            {
+                                digit_forsame[k] = '\0';                        //digit
+                            }
+                            for(int u=0;u<6;u++)
+                            {
+                                if(each_max-i<0)
+                                    continue;
+                                if(isdigit(pp[cal].p_notdigit[each_max-i][u])!=0 || pp[cal].p_notdigit[each_max-i][u]=='-')
+                                    digit_forsame[u] = pp[cal].p_notdigit[each_max-i][u];
+                            }
+                            
+                        int mm=0;                           //to minus
+                        int pow=0;
+                        int get_sum=0;
+                        
+                        for(int o=5;o>=0;o--)
+                        {
+                            if(digit_forsame[o]!='\0' && isalpha(digit_forsame[o])==0)
+                            {        
+                                if(digit_forsame[o]=='-')
+                                    mm=1;
+                                else if(pow==0)
+                                {
+                                    get_sum=1;
+                                    result_forsame_each += (int)digit_forsame[o]-48;
+                                }
+                                else
+                                    result_forsame_each += ((int)digit_forsame[o]-48)*(10*pow);
+                                        
+                                if(mm==1)
+                                {
+                                    result_forsame_each -= result_forsame_each*2;
+                                    mm=0;
+                                }
+                                pow++;
+                                }
+                            }
+                        }
+                        eachsame_result[cal] == 0;
+                        result_forsame += result_forsame_each;
+                    }
+                }
+                if(countt>1)
+                {
+                    if(result_forsame!=0)
+                    {
+                        if(i>1)
+                        {
+                            if(result_forsame<0 || start==0)
+                                printf(" %d%sx^%d",result_forsame,same_char[j],i);
+                            else
+                                printf(" + %d%sx^%d",result_forsame,same_char[j],i);
+                        }
+                        else if(i==1)
+                        {
+                            if(result_forsame<0 || start==0)
+                                printf(" %d%sx",result_forsame,same_char[j]);
+                            else
+                                printf(" + %d%sx",result_forsame,same_char[j]);
+                        }
+                        else
+                        {
+                            if(result_forsame<0 || start==0)
+                                printf(" %d%s",result_forsame,same_char[j]);
+                            else
+                                printf(" + %d%s",result_forsame,same_char[j]);
+                        }
+                        strcpy(same_char[j],"\0");
+                    }
+                    else
+                    {
+                        if(i>1)
+                        {
+                            if(result_forsame<0 || start==0)
+                                printf(" %sx^%d",same_char[j],i);
+                            else
+                                printf(" + %sx^%d",same_char[j],i);
+                        }
+                        else if(i==1)
+                        {
+                            if(result_forsame<0 || start==0)
+                                printf(" %sx",same_char[j]);
+                            else
+                                printf(" + %sx",same_char[j]);
+                        }
+                        else
+                        {
+                            if(result_forsame<0 || start==0)
+                                printf(" %s",same_char[j]);
+                            else
+                                printf(" + %s",same_char[j]);
+                        }
+                        strcpy(same_char[j],"\0");
+                    }
+                }
+                else
+                {
+                    each_max=poly_arr[j];  
+                    if(i>1)
+                    {
+                        if(pp[j].p_notdigit[each_max-i][0]=='-' || start==0)
+                            printf(" %sx^%d",pp[j].p_notdigit[each_max-i],i);
+                        else
+                            printf(" + %sx^%d",pp[j].p_notdigit[each_max-i],i);
+                    }
+                    else if(i==1)
+                    {
+                        if(pp[j].p_notdigit[each_max-i][0]=='-' || start==0)
+                            printf(" %sx",pp[j].p_notdigit[each_max-i]);
+                        else
+                            printf(" + %sx",pp[j].p_notdigit[each_max-i]);
+                    }
+                    else
+                    {
+                        if(pp[j].p_notdigit[each_max-i][0]=='-' || start==0)
+                            printf(" %s",pp[j].p_notdigit[each_max-i]);
+                        else
+                            printf(" + %s",pp[j].p_notdigit[each_max-i]);
+                    }
+                }
+            }
         }
     }
     fclose(input);
