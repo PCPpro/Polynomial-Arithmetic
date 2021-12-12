@@ -20,37 +20,130 @@ int power(int k)
     return product;
 }
 
+void check_file(FILE*input)   //to check whether there is file or not.If not create new and exit the program
+{
+    if (input == NULL)
+    {
+        input = fopen("beforetest.txt", "w");
+        printf("\nYou haven't create the file in the correct place\n");
+        printf("Now we have create new text input for u. Please go write your input on beforetest.txt\n");
+        fclose(input);
+        exit(0);
+    }  
+}
+
+
+int get_sumfor_samechar(char digit_forsame[],int result_forsame_each)
+{
+    int mm=0;                           //to minus
+    int pow=0;                 
+    for(int o=5;o>=0;o--)
+    {
+        if(digit_forsame[o]!='\0' && isalpha(digit_forsame[o])==0)
+        {        
+            if(digit_forsame[o]=='-')
+                mm=1;
+            else if(pow==0)
+                result_forsame_each += (int)digit_forsame[o]-48;
+            else
+                result_forsame_each += ((int)digit_forsame[o]-48)*(10*pow);
+                                        
+            if(mm==1)
+            {
+                result_forsame_each -= result_forsame_each*2;
+                mm=0;
+            }
+            pow++;
+        }
+    }
+    return result_forsame_each;
+}
+
+int get_max_length(int arr,int poly_arr[])
+{
+    int max=0;
+    for(int i=0;i<=arr;i++)
+    {
+        if(max<poly_arr[i])
+            max = poly_arr[i];
+    }
+    return max;
+}
+
+int print_sumdigit_eachpoly(int start,int result_sum,int i,int max)
+{
+    if(result_sum!=0)
+    {
+        if(result_sum>0 && i!=max)
+        {
+            if(result_sum==1)
+            {
+                if(i>1)
+                    printf(" + x^%d",i);
+                else if(i==1)
+                    printf(" + x");
+                else
+                printf(" + 1");
+            }
+                
+            else if(i>1)
+                printf(" + %dx^%d",result_sum,i);
+            else if(i==1)
+                printf(" + %dx",result_sum);
+            else
+                printf(" + %d",result_sum);
+        }
+        else
+        {
+            if(result_sum==1)
+            {
+                if(i>1)
+                    printf(" x^%d",i);
+                else if(i==1)
+                    printf(" x");
+                else
+                printf(" 1");
+            }
+            else if(result_sum==-1)
+            {
+                if(i>1)
+                    printf(" -x^%d",i);
+                else if(i==1)
+                    printf(" -x");
+                else
+                printf(" -1");
+            }
+            else if(i>1)
+                printf(" %dx^%d",result_sum,i);
+            else if(i==1)
+                printf(" %dx",result_sum);
+            else
+                printf(" %d",result_sum);
+        }
+        return 1;
+    }
+}
+
 int main()
 {
     FILE*input;
-    input = fopen("C://Users//USER//Desktop//beforetest.txt", "r");              
-
-    if (input == NULL)
-    {
-        printf("\nUnable to open file.\n");
-        printf("Please check if file exists and you have read/write privilege.\n");
-        exit(0);
-    }          
+    input = fopen("beforetest.txt", "r"); 
+    check_file(input); //send to function to check
     char c;
-    int num_space=1;
-    int count = 0;
-    int arr=0;
-    int value_beforespace = 0;
-    int num=0;
+    int num_space=1;            //avoid many space
+    int count = 0;              //count coefficient in each poly
+    int arr=0;                  //how many poly
+    int value_beforespace = 0;  //there is value before space
+    int num=0;                  //receive how many char in each coefficient
     //each char from file
     //arr=how many poly
-    int afterenter=0;
+    int afterenter=0;           //arr will add by 1 after newline
     int poly_arr[]={0,0,0,0,0}; //count keep
     char each[6];
     int digit=0;        //digit or not
     int minus = 0;
-    for(int i=0;i<5;i++)
-    {
-        for(int j=0;j<10;j++)
-        {
-            strcpy(pp[i].p_notdigit[j],"\0");
-        }
-    }
+    ////////// receive all the coefficient in the polynomial from the file////////////
+
     while ((c = fgetc(input)) != EOF)
     {
         if(c == ' ' && value_beforespace == 1)                
@@ -165,6 +258,11 @@ int main()
             num++;
         }
     }
+
+
+   //print all coefficient of each polynomial
+
+
     for(int i=0;i<=arr;i++)
     {
         printf("Polynomial %d:\n",i+1);
@@ -240,15 +338,18 @@ int main()
         printf("\n");
     }
     
-    if(arr<1)                       //exit if only 1 poly
+     
+    //exit if only 1 poly because they dont have other poly to add
+
+    if(arr<1)                       
         exit(1);
 
-    int max=0;
-    for(int i=0;i<=arr;i++)
-    {
-        if(max<poly_arr[i])
-            max = poly_arr[i];
-    }
+
+    /////////find the max length of these poly////////////////
+
+    int max = get_max_length(arr,poly_arr);
+
+    /////////print out the sum of these polynomial/////////////////////
 
     printf("Sum of these polynomial :\n");
     int result_sum;
@@ -266,11 +367,14 @@ int main()
         {
             for(int ii=0;ii<6;ii++)
             {
-                same_char[k][ii]='\0';                  //set as nulk
+                same_char[k][ii]='\0';                  //set as null
             }
         }
+
+        
         for(int j=0;j<=arr;j++)
         {
+            /////////sum of digit///////
             each_max=poly_arr[j];                
             if(each_max-i<0)
                 continue;
@@ -292,57 +396,10 @@ int main()
                 }
             }
         }
-        if(result_sum!=0)
-        {
-            if(result_sum>0 && i!=max)
-            {
-                if(result_sum==1)
-                {
-                    if(i>1)
-                        printf(" + x^%d",i);
-                    else if(i==1)
-                        printf(" + x");
-                    else
-                    printf(" + 1");
-                }
-                
-                else if(i>1)
-                    printf(" + %dx^%d",result_sum,i);
-                else if(i==1)
-                    printf(" + %dx",result_sum);
-                else
-                    printf(" + %d",result_sum);
-            }
-            else
-            {
-                if(result_sum==1)
-                {
-                    if(i>1)
-                        printf(" x^%d",i);
-                    else if(i==1)
-                        printf(" x");
-                    else
-                    printf(" 1");
-                }
-                else if(result_sum==-1)
-                {
-                    if(i>1)
-                        printf(" -x^%d",i);
-                    else if(i==1)
-                        printf(" -x");
-                    else
-                    printf(" -1");
-                }
-                else if(i>1)
-                    printf(" %dx^%d",result_sum,i);
-                else if(i==1)
-                    printf(" %dx",result_sum);
-                else
-                    printf(" %d",result_sum);
-            }
-            start=1;
-        }
-        //calculate or print the polynomial///////
+
+        start=print_sumdigit_eachpoly(start,result_sum,i,max);
+
+        //calculate or print the char coefficient each poly
         for(int j=0;j<=arr;j++)
         {
             int countt=0;
@@ -356,19 +413,13 @@ int main()
                 int delete = 0;                                                         //for delete the current char in poly
                 for(int check=0;check<=arr;check++)
                 {
-                    if(strcmp(same_char[j],same_char[check])==0 && j!=check)
+                    if(strcmp(same_char[j],same_char[check])==0)
                     {
-                        if(first_time==0)
-                        {
-                            first_time=1;
-                            countt=1;
-                            eachsame_result[j] = 1;
-                        }
-                        else
-                            countt++;
-                        
+                        eachsame_result[j] = 1;
+                        countt++;
                         eachsame_result[check] = 1;
-                        strcpy(same_char[check],"\0");
+                        if(j!=check)
+                            strcpy(same_char[check],"\0");
                         delete=1;
                     }
                 }
@@ -377,7 +428,7 @@ int main()
                     result_forsame = 0;
                     for(int cal=0;cal<=arr;cal++)
                     {
-                        result_forsame_each =0;             //for to keep each same and add afterward
+                        int result_forsame_each =0;             //for to keep each same and add afterward
                         each_max=poly_arr[cal];  
                         if(eachsame_result[cal] == 1)
                         {
@@ -392,33 +443,8 @@ int main()
                                 if(isdigit(pp[cal].p_notdigit[each_max-i][u])!=0 || pp[cal].p_notdigit[each_max-i][u]=='-')
                                     digit_forsame[u] = pp[cal].p_notdigit[each_max-i][u];
                             }
-                            
-                        int mm=0;                           //to minus
-                        int pow=0;
-                        int get_sum=0;
-                        
-                        for(int o=5;o>=0;o--)
-                        {
-                            if(digit_forsame[o]!='\0' && isalpha(digit_forsame[o])==0)
-                            {        
-                                if(digit_forsame[o]=='-')
-                                    mm=1;
-                                else if(pow==0)
-                                {
-                                    get_sum=1;
-                                    result_forsame_each += (int)digit_forsame[o]-48;
-                                }
-                                else
-                                    result_forsame_each += ((int)digit_forsame[o]-48)*(10*pow);
-                                        
-                                if(mm==1)
-                                {
-                                    result_forsame_each -= result_forsame_each*2;
-                                    mm=0;
-                                }
-                                pow++;
-                                }
-                            }
+    
+                            result_forsame_each=get_sumfor_samechar(digit_forsame,result_forsame_each);
                         }
                         eachsame_result[cal] == 0;
                         result_forsame += result_forsame_each;
