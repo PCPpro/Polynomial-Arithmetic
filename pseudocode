@@ -1,0 +1,106 @@
+/*#include library need
+
+create struct poly
+	declare int(p_digit)
+	declare char(p_notdigit) as 2D array
+}name pp
+
+function1 to find power(declare int(k))
+	declare int(product) = 1
+	for loop to giving product value from 1 to 1*10
+	return product
+
+function2 for check file(declare pointer1(input))
+	if pointer1 == NULL
+		open and write file("beforetest.txt)
+		display(error massage)
+		fclose(pointer1)
+		exit()
+
+function3 sum of same character(declare char(array) and int(result))
+	declare int(mm) = 0
+	declare int(pow) = 0
+	for loop(if number are on the same coeffient add them together)
+		if char(array) != NULL
+			if char(array) == '-'
+				mm = 1
+			elif(power == 0) 
+				then add number power of 0
+			else
+				add number with that power
+			if mm == 1 when recieve negative number
+				set int(result) to be neagetive value
+				set mm to 0
+			pow++
+	return int(result)
+
+function4 get the length of polynomial array from file(declare int(arr), int(arr[]))
+	declare int(max) = 0
+	for loop to find the max length of polynomial array
+	return max
+
+function5 to print each sum of digit of each polynomial(declare int(start), int (result), int (i), int (max))
+	if int(result) != 0
+		if int(result) > 0
+			condition to make each number as a polynomial statement
+	return 1
+
+main function
+	declare pointer1(input)
+	open and read file(beforetest.txt)
+	send pointer to check (function2)
+	declare char(c)
+    	declare int num_space=1            //avoid many space
+    	declare int count = 0              //count coefficient in each poly
+    	declare int arr = 0                  //how many poly
+    	declare int value_beforespace = 0  //there is value before space
+    	declare int num = 0                 //receive how many char in each coefficient
+    	declare int afterenter = 0          //arr will add by 1 after newline
+   	declare int poly_arr[] //count keep
+    	declare char each[]
+    	declare int digit = 0        //digit or not
+    	declare int minus = 0
+	
+////////// receive all the coefficient in the polynomial from the file////////////
+
+	while loop (when it not EOF)
+		read char from file and turn into polynomial statement
+		if/else condition
+			error checking/remove all spaces/count cooeffient
+
+  	//print all coefficient of each polynomial
+	for loop:
+		printing all the polynomial
+		
+	if array is less 1 which is False
+		then exit()
+
+/////////find the max length of these poly////////////////
+	
+	int(max) to be max length(function4())
+
+/////////print out the sum of these polynomial/////////////////////
+
+	int result_sum;
+    	int each_max;               //each array poly has how many?
+    	char same_char[][] 2D array
+    	int result_forsame = 0
+    	int result_forsame_each = 0
+    	int eachsame_result[]     //for same char
+    	char digit_forsame[]
+    	int start = 0
+
+	for loop
+		set as NULL
+
+	for loop for /////////sum of digit///////
+
+	declare start = function5()
+
+//calculate or print the char coefficient each poly
+	using for loop
+    they will check if there is a same alphabet in that coefficient it will sum together
+    elsejust prunt that one out
+
+	
+	fclose(pointer1)*/
