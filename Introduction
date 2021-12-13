@@ -1,5 +1,6 @@
 # Polynomial-Arithmetic
 This project will receive the polynomial from file and add them together
+///My project has two type of coefficient which is digit only and the coefficient which has alphabet
 
 :::My project use file to input the value of polynomial.
 :::The program also avoid from receiving the invalid input which is not digit,alphabet and minus sign at the beginning variables.
